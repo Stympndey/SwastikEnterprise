@@ -88,10 +88,11 @@ const serviceProcessData = {
 document.addEventListener('DOMContentLoaded', function() {
     // Mobile menu toggle
     const mobileMenu = document.getElementById('mobile-menu');
-    const navList = document.querySelector('.nav-list');
+    const navList = document.getElementById('main-nav-list'); // Use the ID
 
     if (mobileMenu && navList) {
         mobileMenu.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active'); // Toggle active class on menu-toggle for animation
             navList.classList.toggle('active');
         });
     }

@@ -106,7 +106,7 @@ header.scrolled {
 
 nav {
     display: flex;
-    justify-content: flex-start; /* Align items to the start, will be adjusted with a gap */
+    justify-content: space-between; /* Distribute items with space between them */
     align-items: center;
     max-width: 1300px;
     margin: auto;
@@ -144,7 +144,6 @@ nav .logo p {
     list-style: none;
     padding: 0;
     margin: 0;
-    display: flex; /* Ensure it's always flex */
     z-index: 1000; /* Lower z-index for nav-list */
     overflow: visible; /* Ensure content is not clipped */
     flex-wrap: nowrap; /* Prevent items from wrapping */
@@ -153,6 +152,7 @@ nav .logo p {
     gap: 5px; /* Further reduced gap between nav items */
     overflow-x: auto; /* Enable horizontal scrolling */
     white-space: nowrap; /* Prevent text wrapping within list items */
+    transition: all 0.3s ease-in-out; /* Smooth transition for menu */
 }
 
 .nav-list li {
@@ -1203,46 +1203,190 @@ footer {
 
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (min-width: 769px) {
     .nav-list {
-        display: none;
-        flex-direction: column;
-        width: 100%;
-        position: absolute;
-        top: 70px;
-        left: 0;
-        background: var(--primary-color);
-        text-align: center;
-    }
-    .nav-list.active {
-        display: flex;
-    }
-    .nav-list li {
-        margin: 1rem 0;
+        display: flex; /* Show nav-list on desktop */
     }
     .menu-toggle {
-        display: flex;
+        display: none; /* Hide menu-toggle on desktop */
     }
-    h2 { font-size: 2rem; }
-    #hero h1 { font-size: 2.5rem; }
-    .policy-container, .resource-container { flex-direction: column; }
+}
+
+@media (max-width: 768px) {
+    /* General adjustments */
+    body {
+        font-size: 0.95rem; /* Slightly smaller base font size */
+    }
+    main {
+        padding: 0 1.5rem; /* Reduced horizontal padding for main content */
+    }
+    section {
+        padding: 4rem 0; /* Reduced vertical padding for sections */
+    }
+    section.bg-light {
+        padding: 4rem 1.5rem; /* Reduced padding for light background sections */
+    }
+    h2 {
+        font-size: 2.2rem; /* Adjusted for smaller screens */
+        margin-bottom: 2rem;
+    }
     #hero h1 {
         font-size: 3rem; /* Adjusted for smaller screens */
     }
+    #hero h2 {
+        font-size: 1.1rem;
+    }
+    #hero p {
+        font-size: 1rem;
+    }
+    #hero .cta-button {
+        padding: 0.9rem 2rem;
+        font-size: 0.9rem;
+    }
 
-    /* Org Chart Responsive Adjustments */
-    .level-2, .level-3-group, .level-4, .level-5 {
+    /* Navigation adjustments */
+    nav {
+        padding: 0 1.5rem; /* Adjust nav padding */
+    }
+    .nav-list {
+        display: none; /* Hide nav-list by default on mobile */
+        flex-direction: column;
+        width: 100%;
+        position: absolute;
+        top: 70px; /* Adjust based on header height */
+        left: 0;
+        background: var(--primary-color);
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        padding: 1rem 0;
+        transform: translateX(100%); /* Start off-screen to the right */
+        transition: transform 0.3s ease-in-out; /* Smooth slide transition */
+    }
+    .nav-list.active {
+        display: flex; /* Show nav-list when active on mobile */
+        transform: translateX(0); /* Slide into view */
+    }
+    .nav-list li {
+        margin: 0.5rem 0; /* Reduced margin for nav items */
+    }
+    .nav-list li a {
+        padding: 10px 15px; /* Adjust padding for mobile nav links */
+        font-size: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
+        border-radius: 5px;
+        display: block; /* Make links block-level for full padding */
+        margin: 0 1rem; /* Add horizontal margin for better spacing */
+    }
+    .nav-list li a:hover {
+        background-color: var(--secondary-color); /* Consistent hover effect */
+    }
+    .menu-toggle {
+        display: flex; /* Show menu-toggle on mobile */
+        z-index: 1051; /* Ensure it's above the nav-list */
+    }
+
+    /* Hamburger icon animation */
+    .menu-toggle.active .bar:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+    .menu-toggle.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+    .menu-toggle.active .bar:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* Grid layouts */
+    .details-grid,
+    .service-list,
+    .team-grid,
+    .awards-list,
+    .policy-grid,
+    .goal-grid,
+    .featured-services-grid {
+        grid-template-columns: 1fr; /* Stack items on small screens */
+        gap: 1rem; /* Reduced gap */
+    }
+
+    .team-grid-directors {
         flex-direction: column;
         align-items: center;
+        gap: 1rem;
+    }
+
+    /* Tables */
+    .table-container {
+        overflow-x: auto; /* Ensure tables are scrollable */
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    }
+    table {
+        width: 100%; /* Ensure table takes full width */
+        display: block; /* Allow horizontal scrolling */
+    }
+    th, td {
+        white-space: nowrap; /* Prevent text wrapping in table cells */
+    }
+
+    /* Org Chart Responsive Adjustments - existing rules are mostly fine, just ensure they are applied */
+    .level-2-group, .level-3-group, .level-4-group, .level-5-group {
+        flex-direction: column;
+        align-items: center;
+        padding-top: 0;
+    }
+
+    .level-2-group::before, .level-3-group::before, .level-4-group::before, .level-5-group::before {
+        display: none; /* Hide horizontal lines on small screens */
     }
 
     .column {
         width: 100%;
-        padding-top: 0;
+        padding: 0;
     }
 
     .column > .box {
-        margin-bottom: 10px;
+        margin-bottom: 1rem;
+    }
+
+    .column .connectors {
+        height: 15px; /* Adjusted from 20px */
+        margin: 0.5rem auto;
+    }
+
+    .column .connectors:first-child::before, .column .connectors:last-child::before {
+        height: 15px;
+        top: -15px;
+    }
+
+    .level-3-group .column::before, .level-4-group .column::before, .level-5-group .column::before {
+        height: 15px;
+        top: -15px;
+    }
+
+    .level-4-group, .level-5-group {
+        padding-top: 0;
+    }
+
+    .level-4-group::before, .level-5-group::before {
+        display: none;
+    }
+
+    .level-4-group .box, .level-5-group .box {
+        margin-top: 0;
+    }
+
+    .level-4-group .box::before, .level-5-group .box::before {
+        display: none;
+    }
+
+    /* Policy and Resource cards */
+    .policy-card, .resource-card {
+        min-width: unset; /* Remove min-width constraint */
+        max-width: 100%; /* Allow full width */
+    }
+
+    /* Client scroller */
+    .scroller-inner {
+        animation: scroll 20s linear infinite; /* Faster scroll for smaller screens */
     }
     
     /* Back to Top Button */
@@ -1268,29 +1412,42 @@ footer {
         background-color: var(--primary-color); /* Add a darker background on hover */
         transform: translateY(-3px);
     }
+}
 
-    .column .connectors {
-        height: 20px;
-        margin-bottom: 10px;
+/* Additional media query for very small screens (e.g., phones in portrait mode) */
+@media (max-width: 480px) {
+    h2 {
+        font-size: 1.8rem;
     }
-
-    .column .connectors .line {
-        width: 0; /* Hide horizontal line */
-        border-top: none;
+    #hero h1 {
+        font-size: 2rem;
     }
-
-    .column .connectors:first-child::before {
-        height: 10px;
+    #hero h2 {
+        font-size: 0.9rem;
+        letter-spacing: 3px;
     }
-
-    .level-2 .box::after, .level-3-group .column > .box::after {
-        bottom: -10px;
-        height: 10px;
+    #hero p {
+        font-size: 0.9rem;
     }
-
-    .level-2::before {
-        top: -10px;
-        height: 10px;
+    .company-logo {
+        height: 70px; /* Smaller logo */
+        margin-right: 10px;
+    }
+    nav .logo h1 {
+        font-size: 2rem;
+    }
+    nav .logo p {
+        font-size: 0.8rem;
+    }
+    .nav-list {
+        top: 60px; /* Adjust based on smaller header height */
+    }
+    .nav-list li a {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
+    .client-logo {
+        padding: 1.5rem 2rem; /* Smaller padding for client logos */
     }
 }
 
