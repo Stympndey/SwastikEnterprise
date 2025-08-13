@@ -95,6 +95,14 @@ document.addEventListener('DOMContentLoaded', function() {
             mobileMenu.classList.toggle('active'); // Toggle active class on menu-toggle for animation
             navList.classList.toggle('active');
         });
+
+        // Close mobile menu when a navigation link is clicked
+        navList.querySelectorAll('li button').forEach(button => {
+            button.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                navList.classList.remove('active');
+            });
+        });
     }
  
     // Scroll-triggered animations
