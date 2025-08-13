@@ -69,6 +69,12 @@ nav .logo p {
     display: flex;
 }
 
+.company-logo {
+    max-height: 80px; /* Adjusted to medium size */
+    width: auto;
+    margin-right: 10px;
+}
+
 .nav-list li {
     margin-left: 25px;
 }
@@ -269,6 +275,32 @@ tbody tr:hover {
 }
 
 /* Clients Section */
+.scroller {
+    max-width: 100%;
+    overflow: hidden;
+    -webkit-mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent);
+    mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent);
+}
+
+.scroller-inner {
+    padding-block: 1rem;
+    display: flex;
+    gap: 1rem;
+    width: max-content;
+    flex-wrap: nowrap;
+    animation: scroll 30s linear infinite;
+}
+
+.scroller-inner:hover {
+    animation-play-state: paused;
+}
+
+@keyframes scroll {
+    to {
+        transform: translate(calc(-50% - 0.5rem));
+    }
+}
+
 .client-list {
     display: flex;
     flex-wrap: wrap;
@@ -284,6 +316,7 @@ tbody tr:hover {
     font-weight: bold;
     color: #555;
     transition: transform 0.3s;
+    flex-shrink: 0; /* Prevent items from shrinking */
 }
 .client-logo:hover {
     transform: scale(1.05);
@@ -350,39 +383,242 @@ tbody tr:hover {
 }
 
 /* Org Chart */
-#org-chart { text-align: center; }
-.chart-container { display: inline-block; }
-.level-1 {
-    background: var(--primary-color);
-    color: var(--white-color);
-    padding: 1rem 2rem;
-    border-radius: 8px;
+/* Org Chart */
+#org-chart {
+    text-align: center;
+    overflow-x: auto; /* Allow horizontal scrolling for large charts */
+    padding-bottom: 20px; /* Space for scrollbar */
+}
+
+.chart-container {
     display: inline-block;
-    font-weight: bold;
+    min-width: fit-content; /* Ensure it takes full width for scrolling if needed */
+    padding: 20px;
+    box-sizing: border-box;
 }
-.connectors-1 {
-    border-left: 2px solid var(--secondary-color);
-    border-right: 2px solid var(--secondary-color);
-    height: 30px;
-    margin: 0 auto;
-    width: 80%;
-}
-.line {
-    border-top: 2px solid var(--secondary-color);
-    width: 100%;
-    margin-top: 30px;
-}
-.level-2 {
+
+.chart-content {
     display: flex;
-    justify-content: space-around;
-    gap: 1rem;
+    flex-direction: column;
+    align-items: center;
 }
-.level-2 .box {
-    background: var(--light-gray);
-    border: 2px solid var(--secondary-color);
-    padding: 1rem;
-    border-radius: 8px;
-    flex: 1;
+
+.box {
+    background: #e0f2f7; /* Light blue background */
+    border: 1px solid #a7d9ed; /* Blue border */
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin: 10px;
+    font-weight: bold;
+    color: var(--primary-color);
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    white-space: nowrap; /* Prevent text wrapping */
+    min-width: 150px; /* Ensure boxes have a minimum width */
+}
+
+.level-1 .box {
+    background: #cceeff; /* Slightly darker blue for top level */
+    border-color: #88ccff;
+}
+
+.connectors {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+}
+
+.connectors::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 20px; /* Vertical line length */
+    background-color: var(--secondary-color);
+}
+
+.level-group {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+    padding-top: 20px; /* Space for horizontal line */
+}
+
+.level-group::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--secondary-color);
+}
+
+.level-group .column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    flex-shrink: 0; /* Prevent columns from shrinking */
+}
+
+.level-group .column:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -1px; /* Adjust to align with the line */
+    width: 2px;
+    height: 20px; /* Vertical line connecting to horizontal */
+    background-color: var(--secondary-color);
+}
+
+.level-group .column:not(:first-child)::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -1px; /* Adjust to align with the line */
+    width: 2px;
+    height: 20px; /* Vertical line connecting to horizontal */
+    background-color: var(--secondary-color);
+}
+
+.level-group .column .box {
+    margin-top: 20px; /* Space for vertical line from parent */
+}
+
+.level-group .column .connectors::before {
+    height: 20px; /* Adjust for sub-level connectors */
+}
+
+/* Specific level adjustments */
+.level-2-group {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: nowrap; /* Prevent wrapping for main levels */
+    gap: 20px; /* Add gap between columns */
+}
+
+.level-3-group, .level-4-group, .level-5-group {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: nowrap; /* Prevent wrapping for sub-levels */
+    padding-top: 20px;
+    position: relative;
+    gap: 20px; /* Add gap between columns */
+}
+
+.level-3-group::before, .level-4-group::before, .level-5-group::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--secondary-color);
+}
+
+.level-3-group .column, .level-4-group .column, .level-5-group .column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.level-3-group .column:not(:last-child)::after,
+.level-4-group .column:not(:last-child)::after,
+.level-5-group .column:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -1px;
+    width: 2px;
+    height: 20px;
+    background-color: var(--secondary-color);
+}
+
+.level-3-group .column:not(:first-child)::before,
+.level-4-group .column:not(:first-child)::before,
+.level-5-group .column:not(:first-child)::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -1px;
+    width: 2px;
+    height: 20px;
+    background-color: var(--secondary-color);
+}
+
+.level-3-group .column .box,
+.level-4-group .column .box,
+.level-5-group .column .box {
+    margin-top: 20px;
+}
+
+/* Adjustments for specific connections */
+.level-2-group > .column > .box {
+    margin-top: 0; /* No top margin for direct children of level-2-group */
+}
+
+.level-2-group > .column > .connectors::before {
+    height: 20px; /* Connects to the horizontal line of level-2-group */
+}
+
+.level-3-group > .column > .box {
+    margin-top: 0;
+}
+
+.level-3-group > .column > .connectors::before {
+    height: 20px;
+}
+
+.level-4-group > .column > .box {
+    margin-top: 0;
+}
+
+.level-4-group > .column > .connectors::before {
+    height: 20px;
+}
+
+.level-5-group > .column > .box {
+    margin-top: 0;
+}
+
+.level-5-group > .column > .connectors::before {
+    height: 20px;
+}
+
+/* Responsive adjustments for org chart */
+@media (max-width: 768px) {
+    .level-group, .level-2-group, .level-3-group, .level-4-group, .level-5-group {
+        flex-direction: column;
+        align-items: center;
+        flex-wrap: wrap; /* Allow wrapping for main levels */
+    }
+
+    .level-group::before, .level-2-group::before, .level-3-group::before, .level-4-group::before, .level-5-group::before {
+        width: 2px;
+        height: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .level-group .column .box,
+    .level-2-group .column .box,
+    .level-3-group .column .box,
+    .level-4-group .column .box,
+    .level-5-group .column .box {
+        margin-top: 10px;
+    }
+
+    .connectors::before {
+        height: 10px;
+    }
 }
 
 /* Awards */
@@ -513,6 +749,16 @@ footer {
     text-align: center;
     padding: 2rem 0;
     margin-top: 2rem;
+    position: relative; /* Added for positioning developer-info */
+}
+
+.developer-info {
+    position: absolute;
+    bottom: 20px; /* Increased for visibility */
+    right: 20px; /* Increased for visibility */
+    color: var(--dark-gray); /* Changed to dark blue */
+    font-size: 0.9rem; /* Slightly increased font size */
+    z-index: 10; /* Ensure it's on top */
 }
 
 /* Welcome Section */
